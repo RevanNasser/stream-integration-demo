@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
 import { Route as DocsStreamPayRouteImport } from './routes/docs/stream-pay'
+import { Route as PaymentSuccessIndexRouteImport } from './routes/payment/success/index'
+import { Route as PaymentFailureIndexRouteImport } from './routes/payment/failure/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,69 @@ const DocsStreamPayRoute = DocsStreamPayRouteImport.update({
   path: '/docs/stream-pay',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentSuccessIndexRoute = PaymentSuccessIndexRouteImport.update({
+  id: '/payment/success/',
+  path: '/payment/success/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentFailureIndexRoute = PaymentFailureIndexRouteImport.update({
+  id: '/payment/failure/',
+  path: '/payment/failure/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs/stream-pay': typeof DocsStreamPayRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/payment/failure/': typeof PaymentFailureIndexRoute
+  '/payment/success/': typeof PaymentSuccessIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs/stream-pay': typeof DocsStreamPayRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/payment/failure': typeof PaymentFailureIndexRoute
+  '/payment/success': typeof PaymentSuccessIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs/stream-pay': typeof DocsStreamPayRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/payment/failure/': typeof PaymentFailureIndexRoute
+  '/payment/success/': typeof PaymentSuccessIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs/stream-pay' | '/checkout/'
+  fullPaths:
+    | '/'
+    | '/docs/stream-pay'
+    | '/checkout/'
+    | '/payment/failure/'
+    | '/payment/success/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs/stream-pay' | '/checkout'
-  id: '__root__' | '/' | '/docs/stream-pay' | '/checkout/'
+  to:
+    | '/'
+    | '/docs/stream-pay'
+    | '/checkout'
+    | '/payment/failure'
+    | '/payment/success'
+  id:
+    | '__root__'
+    | '/'
+    | '/docs/stream-pay'
+    | '/checkout/'
+    | '/payment/failure/'
+    | '/payment/success/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DocsStreamPayRoute: typeof DocsStreamPayRoute
   CheckoutIndexRoute: typeof CheckoutIndexRoute
+  PaymentFailureIndexRoute: typeof PaymentFailureIndexRoute
+  PaymentSuccessIndexRoute: typeof PaymentSuccessIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +118,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsStreamPayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment/success/': {
+      id: '/payment/success/'
+      path: '/payment/success'
+      fullPath: '/payment/success/'
+      preLoaderRoute: typeof PaymentSuccessIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/failure/': {
+      id: '/payment/failure/'
+      path: '/payment/failure'
+      fullPath: '/payment/failure/'
+      preLoaderRoute: typeof PaymentFailureIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +139,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocsStreamPayRoute: DocsStreamPayRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
+  PaymentFailureIndexRoute: PaymentFailureIndexRoute,
+  PaymentSuccessIndexRoute: PaymentSuccessIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
